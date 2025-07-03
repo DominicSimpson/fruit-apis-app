@@ -1,7 +1,5 @@
 const x = require("./script2")
-
-console.log(x);
-
+const fruitList = document.querySelector("#fruitSection ul")
 const fruitForm = document.querySelector('#inputSection form')
 console.log(fruitForm);
 
@@ -11,5 +9,12 @@ fruitForm.addEventListener(
 
 function extractFruit(e) {
     e.preventDefault();
-    console.log(e);
+    addFruit(e.target.fruitInput.value);
+    e.target.fruitInput.value = "";
+}
+
+function addFruit(fruit) {
+    const li = document.createElement('li');
+    li.textContent = fruit;
+    fruitList.appendChild(li);
 }
