@@ -1,16 +1,21 @@
 const x = require("./script2")
+const fruitForm = document.querySelector('#inputSection form');
 const fruitList = document.querySelector("#fruitSection ul");
 const fruitNutrition = document.querySelector("#nutritionSection p");
-const fruitForm = document.querySelector('#inputSection form');
 const fruitImage = document.querySelector("#fruitImage");
 
 
 fruitForm.addEventListener(
     'submit', extractFruit
+
 );
+
+    console.log("Form element:", fruitForm);
+
 
 function extractFruit(e) {
     e.preventDefault();
+    console.log("Form submitted");
     fetchFruitData(e.target.fruitInput.value);
     e.target.fruitInput.value = "";
 }
@@ -18,7 +23,7 @@ function extractFruit(e) {
 let cal = 0;
 
 
-function addFruit(fruit, imageUrl = "") {
+function addFruit(fruit, imageURL = "") {
 
     const li = document.createElement("li");
     li.textContent = fruit.name;
@@ -32,8 +37,8 @@ function addFruit(fruit, imageUrl = "") {
     cal += fruit.nutritions.calories;
     fruitNutrition.textContent = `Total Calories: ${cal}`;
 
-     if (imageUrl) {
-        fruitImage.src = imageUrl;
+    if (imageURL) {
+        fruitImage.src = imageURL;
         fruitImage.alt = `${fruit.name} image`;
     } else {
         fruitImage.src = "";
@@ -56,10 +61,14 @@ function removeFruit(e) {
     li.remove();
 }
 
-const pixabayApiKey = import.meta.env.VITE_PIXABAY_API_KEY;
+const pixabayApiKey = process.env.VITE_PIXABAY_API_KEY;
+console.log("Pixabay key:", pixabayApiKey); // Should print the actual API key
+
 
 function fetchFruitData(fruit) {
     const fruitName = fruit.trim();
+
+
     console.log("User input:", fruitName);
 
     fetch(`https://fruit-api-5v0j.onrender.com/fruits/${fruitName}`)
@@ -75,8 +84,16 @@ function fetchFruitData(fruit) {
             fetch(pixabayUrl)
                 .then((resp) => resp.json())
                 .then(imageData => {
-                    console.log("Pixabay data:", imageData);
-                    const imageUrl = imageData.hits?.[0]?.webformatURL || "";
+                    console.log("Pixabay key:", pixabayApiKey);  // Should print actual key, not "undefined"
+                    let imageUrl = "";
+                    if (
+                        imageData &&
+                        Array.isArray(imageData.hits) &&
+                        imageData.hits.length > 0 &&
+                        imageData.hits[0].webformatURL
+                    ) {
+                        imageUrl = imageData.hits[0].webformatURL;
+                    }
                     addFruit(fruitData, imageUrl);
                 })
                 .catch(err => {

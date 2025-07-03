@@ -5,12 +5,14 @@
   "main": "script.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "watchify ./script.js -o bundle.js"
+    "dev": "cross-env VITE_PIXABAY_API_KEY=51162756-fe4e2248c284990709dcab3a3 watchify script.js -o bundle.js -t [ envify ]"
   },
   "keywords": [],
   "author": "Me",
   "license": "ISC",
   "devDependencies": {
+    "cross-env": "^7.0.3",
+    "envify": "^4.1.0",
     "watchify": "^4.0.0"
   },
   "dependencies": {
