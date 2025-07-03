@@ -12,5 +12,10 @@
   "license": "ISC",
   "devDependencies": {
     "watchify": "^4.0.0"
+  },
+  "dependencies": {
+    "parcel": "^2.15.4",
+    "vite": "^7.0.1",
+    "webpack": "^5.99.9"
   }
 }

@@ -1,8 +1,9 @@
 const x = require("./script2")
 const fruitList = document.querySelector("#fruitSection ul");
-const fruitForm = document.querySelector('#inputSection form');
 const fruitNutrition = document.querySelector("#nutritionSection p");
-console.log(fruitForm);
+const fruitForm = document.querySelector('#inputSection form');
+const fruitImage = document.querySelector("#fruitImage");
+
 
 fruitForm.addEventListener(
     'submit', extractFruit
@@ -16,24 +17,73 @@ function extractFruit(e) {
 
 let cal = 0;
 
-function addFruit(fruit) {
+
+function addFruit(fruit, imageUrl = "") {
+
     const li = document.createElement("li");
     li.textContent = fruit.name;
+
+    li.dataset.calories = Number(fruit.nutritions.calories);
+
+
     li.addEventListener("click", removeFruit);
     fruitList.appendChild(li);
 
     cal += fruit.nutritions.calories;
-    fruitNutrition.textContent = cal;
+    fruitNutrition.textContent = `Total Calories: ${cal}`;
+
+     if (imageUrl) {
+        fruitImage.src = imageUrl;
+        fruitImage.alt = `${fruit.name} image`;
+    } else {
+        fruitImage.src = "";
+        fruitImage.alt = "";
+    }
 }
+
+
 
 function removeFruit(e) {
-    e.target.remove();
+    console.log("Clicked:", e.target);
+    console.log("Dataset:", e.target.dataset);
+    console.log("Calories to subtract:", e.target.dataset.calories);
+    
+    const li = e.currentTarget;
+    const calories = Number(li.dataset.calories);
+
+    cal -= calories;
+    fruitNutrition.textContent = `Total Calories: ${cal}`;
+    li.remove();
 }
 
+const pixabayApiKey = import.meta.env.VITE_PIXABAY_API_KEY;
+
 function fetchFruitData(fruit) {
-    fetch(`https://fruit-api-5v0j.onrender.com/fruits/${fruit}`)
+    const fruitName = fruit.trim();
+    console.log("User input:", fruitName);
+
+    fetch(`https://fruit-api-5v0j.onrender.com/fruits/${fruitName}`)
         .then((resp) => resp.json())
-        .then(data => addFruit(data))
-        .catch((e) => console.log(e));
+        .then(fruitData => {
+            console.log("FruityAPI data:", fruitData);
+
+            const encodedFruit = encodeURIComponent(fruitData.name);
+            const pixabayUrl = `https://pixabay.com/api/?key=${pixabayApiKey}&q=${encodedFruit}&image_type=photo&category=food&per_page=3`;
+
+            console.log("Pixabay URL:", pixabayUrl);
+
+            fetch(pixabayUrl)
+                .then((resp) => resp.json())
+                .then(imageData => {
+                    console.log("Pixabay data:", imageData);
+                    const imageUrl = imageData.hits?.[0]?.webformatURL || "";
+                    addFruit(fruitData, imageUrl);
+                })
+                .catch(err => {
+                    console.warn("Pixabay fetch failed", err);
+                    addFruit(fruitData, "");
+                });
+        })
+        .catch((e) => console.log("FruityAPI fetch error:", e));
 }
 
