@@ -1,0 +1,24 @@
+{
+  "name": "fruitsalad_app",
+  "version": "1.0.0",
+  "description": "An application that takes fruit data",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "dotenv -e .env -- cross-env watchify script.js -o bundle.js -t [ envify ]"
+  },
+  "keywords": [],
+  "author": "Me",
+  "license": "ISC",
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "dotenv-cli": "^8.0.0",
+    "envify": "^4.1.0",
+    "watchify": "^4.0.0"
+  },
+  "dependencies": {
+    "parcel": "^2.15.4",
+    "vite": "^7.0.1",
+    "webpack": "^5.99.9"
+  }
+}
