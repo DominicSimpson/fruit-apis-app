@@ -15,22 +15,22 @@ function extractFruit(e) {
 
 const pixabayApiKey = process.env.VITE_PIXABAY_API_KEY;
 
-async function fetchFruitData(fruit) { // Make two async fetch API calls
-    try {
-        const respData = await fetch(`https://fruit-api-5v0j.onrender.com/fruits/${fruit}`); // for nutrition data
+async function fetchFruitData(fruit) { // Declares an asynchronous function called fetchFruitData that takes a fruit name
+    try { //try block - used to attempt code that might throw an error, such as fetch()
+        const respData = await fetch(`https://fruit-api-5v0j.onrender.com/fruits/${fruit}`); // a Promise - calls the API for nutrition data
         const respImg = await fetch(
             `https://pixabay.com/api/?q=${fruit}+fruit&key=${pixabayApiKey}` // for image
         );
 
         if (respData.ok && respImg.ok) { // if both succeed:
-            const data = await respData.json(); // parse them as JSON
+            const data = await respData.json(); // parses JSON responses into usable JavaScript
             const imgData = await respImg.json();
             addFruit(data, imgData); // then pass them to addFruit function
         } else {
             throw "Something has gone wrong with one of the API requests";
         }
     } catch (e) {
-        console.log(e); // if either API fais, log error
+        console.log(e); // if either API fais, throws an error and logs error
     }
 }
 
