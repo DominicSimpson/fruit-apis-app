@@ -49,7 +49,6 @@ async function createNewFruit(e) {
         body: JSON.stringify(data)
     } // Add deployed API URL in this fetch
     const response = await fetch(`https://fruits-backender-rihw.onrender.com/fruits`, options);
-}
 
 let messageStatus = document.querySelector("#message");
 
@@ -58,15 +57,15 @@ if (response.status === 201) {
     messageStatus.textContent = "Fruit successfully created";
     setTimeout(() => {
         messageStatus.textContent = ""
-    }, 4000)
+        }, 4000)
 } else {
     e.target.fruitInput.value = ""
     messageStatus.textContent = "This fruit already exists. Please enter another fruit!"
     setTimeout(() => {
         messageStatus.textContent = ""
-    }, 4000)
+        }, 4000)
+    }
 }
-
 
 function addFruit(fruit, fruitImg) {
     const img = document.createElement("img"); // create img element
