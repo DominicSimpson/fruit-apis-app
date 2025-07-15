@@ -17,6 +17,7 @@
     "watchify": "^4.0.0"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "parcel": "^2.15.4",
     "vite": "^7.0.1",
     "webpack": "^5.99.9"
