@@ -17,7 +17,7 @@ const pixabayApiKey = process.env.VITE_PIXABAY_API_KEY;
 
 async function fetchFruitData(fruit) { // Declares an asynchronous function called fetchFruitData that takes a fruit name
     try { //try block - used to attempt code that might throw an error, such as fetch()
-        const respData = await fetch(`https://fruit-api-5v0j.onrender.com/fruits/${fruit}`); // a Promise - calls the API for nutrition data
+        const respData = await fetch(`https://fruits-backender-rihw.onrender.com/fruits/${fruit}`); // a Promise - calls the API for nutrition data
         const respImg = await fetch(
             `https://pixabay.com/api/?q=${fruit}+fruit&key=${pixabayApiKey}` // for image
         );
