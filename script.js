@@ -11,11 +11,11 @@ createForm.addEventListener("submit", createNewFruit);
 
 function extractFruit(e) {
     e.preventDefault(); // prevents page from reloading
-    fetchFruitData(e.target.fruitInput.value); // fetches fruit data and image using inputted fruit name
+    fetchFruitData(e.target.fruitInput.value.toLowerCase()); // fetches fruit data and image using inputted fruit name
     e.target.fruitInput.value = ""; // clears the input
 }
 
-const pixabayApiKey = process.env.VITE_PIXABAY_API_KEY;
+const pixabayApiKey = "51162756-fe4e2248c284990709dcab3a3";
 
 async function fetchFruitData(fruit) { // Declares an asynchronous function called fetchFruitData that takes a fruit name
     try { //try block - used to attempt code that might throw an error, such as fetch()
