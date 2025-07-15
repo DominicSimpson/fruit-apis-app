@@ -1,11 +1,13 @@
 const fruitForm = document.querySelector("#inputSection form"); // the form the user submits
 const fruitList = document.querySelector("#fruitSection ul"); // where fruit images will be added
 const fruitNutrition = document.querySelector("#nutritionSection p"); // the p that displays the total calories
+const createForm = document.querySelector("#create-form"); // create a fruit
 
 let cal = 0; // running total of all calories
 const fruitCal = {}; // an object that maps fruit names to their individual calorie values (used to subtract later)
 
 fruitForm.addEventListener("submit", extractFruit); // When user submits form, extractFruit function is called
+createForm.addEventListener("submit", createNewFruit);
 
 function extractFruit(e) {
     e.preventDefault(); // prevents page from reloading
@@ -33,6 +35,38 @@ async function fetchFruitData(fruit) { // Declares an asynchronous function call
         console.log(e); // if either API fais, throws an error and logs error
     }
 }
+
+async function createNewFruit(e) {
+    e.preventDefault();
+
+    const data = { name: e.target.fruitInput.value };
+
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    } // Add deployed API URL in this fetch
+    const response = await fetch(`https://fruits-backender-rihw.onrender.com/fruits`, options);
+}
+
+let messageStatus = document.querySelector("#message");
+
+if (response.status === 201) {
+    e.target.fruitInput.value = ""
+    messageStatus.textContent = "Fruit successfully created";
+    setTimeout(() => {
+        messageStatus.textContent = ""
+    }, 4000)
+} else {
+    e.target.fruitInput.value = ""
+    messageStatus.textContent = "This fruit already exists. Please enter another fruit!"
+    setTimeout(() => {
+        messageStatus.textContent = ""
+    }, 4000)
+}
+
 
 function addFruit(fruit, fruitImg) {
     const img = document.createElement("img"); // create img element
